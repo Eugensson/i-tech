@@ -4,6 +4,7 @@ import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { useState, useTransition } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { IoEyeOutline, IoEyeOffOutline } from "react-icons/io5";
 
 import {
   Form,
@@ -22,6 +23,7 @@ import { FormSuccess } from "@/components/form-success";
 import { CardWrapper } from "@/components/auth/card-wrapper";
 
 export const LoginForm = () => {
+  const [isVisible, setIsVisible] = useState(false);
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
   const [isPending, startTransition] = useTransition();
@@ -33,6 +35,8 @@ export const LoginForm = () => {
       password: "",
     },
   });
+
+  const handleVisible = () => setIsVisible((prev) => !prev);
 
   const onSubmit = (values: z.infer<typeof LoginSchema>) => {
     setError("");
@@ -51,7 +55,7 @@ export const LoginForm = () => {
       headerLabel="Welcome back"
       backButtonLabel="Don't have an account?"
       backButtonHref="/register"
-      // showSocial
+      showSocial
     >
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
@@ -82,13 +86,26 @@ export const LoginForm = () => {
                 <FormItem>
                   <FormLabel>Password</FormLabel>
                   <FormControl>
-                    <Input
-                      {...field}
-                      disabled={isPending}
-                      placeholder="******"
-                      type="password"
-                      autoComplete="off"
-                    />
+                    <div className="relative">
+                      <Input
+                        {...field}
+                        disabled={isPending}
+                        placeholder="******"
+                        type={isVisible ? "text" : "password"}
+                        autoComplete="off"
+                      />
+                      {isVisible ? (
+                        <IoEyeOffOutline
+                          className="absolute top-[30%] right-2 cursor-pointer"
+                          onClick={handleVisible}
+                        />
+                      ) : (
+                        <IoEyeOutline
+                          className="absolute top-[30%] right-2 cursor-pointer"
+                          onClick={handleVisible}
+                        />
+                      )}
+                    </div>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -101,7 +118,7 @@ export const LoginForm = () => {
             disabled={isPending}
             type="submit"
             size="lg"
-            className="w-1/2 flex mx-auto"
+            className="w-full"
           >
             Login
           </Button>

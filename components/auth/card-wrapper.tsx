@@ -38,7 +38,7 @@ export const CardWrapper = ({
           className="object-contain"
         />
       </div>
-      <div className="flex flex-col gap-8 my-auto py-5">
+      <div className="w-[500px] m-auto flex flex-col gap-4">
         <CardHeader>
           <Header label={headerLabel} />
         </CardHeader>
